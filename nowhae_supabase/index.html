@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOWHAE — 나는 오늘도 성장 중</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ─── HEADER ─── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <img src="nowhae_logo.png" alt="NOWHAE 로고" class="logo-img" />
+        <div class="logo-text-wrap">
+          <span class="logo-main">NOWHAE</span>
+          <span class="logo-sub">나는 오늘도 성장 중</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <!-- 로그인 전 -->
+        <button class="btn-login hidden" id="btnLogin">
+          <i class="fa-brands fa-google"></i> 구글 로그인
+        </button>
+        <!-- 로그인 후 -->
+        <div class="user-menu hidden" id="userMenu">
+          <button class="btn-mypage" id="btnMypage">
+            <img id="userAvatar" src="" alt="프로필" class="user-avatar" />
+            <span id="userName">내 기록</span>
+          </button>
+          <button class="btn-logout" id="btnLogout">로그아웃</button>
+        </div>
+        <button class="btn-write-top" id="openModalBtn">
+          <i class="fa-solid fa-pen-to-square"></i> 성장 기록하기
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── HERO BANNER ─── -->
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-label">GROWTH FEED</p>
+      <h1 class="hero-title">어제보다 <em>0.1%</em> 나아진<br/>오늘을 기록하세요</h1>
+      <p class="hero-desc">작은 변화가 쌓이면 인생이 바뀝니다.<br/>당신의 성장 스토리를 세상과 나눠보세요.</p>
+      <div class="hero-stats" id="heroStats">
+        <div class="stat-item"><span class="stat-num" id="totalPosts">—</span><span class="stat-label">총 기록</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="stat-num" id="totalLikes">—</span><span class="stat-label">총 응원</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="stat-num" id="totalDays">—</span><span class="stat-label">최장 연속</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 탭 ─── -->
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tabAll">🌍 전체 피드</button>
+    <button class="tab-btn" id="tabMy">👤 내 기록</button>
+  </div>
+
+  <!-- ─── FILTER BAR ─── -->
+  <div class="filter-bar" id="filterBar">
+    <div class="filter-inner">
+      <button class="filter-btn active" data-cat="전체">전체</button>
+      <button class="filter-btn" data-cat="공부">📚 공부</button>
+      <button class="filter-btn" data-cat="운동">🏋️ 운동</button>
+      <button class="filter-btn" data-cat="독서">📖 독서</button>
+      <button class="filter-btn" data-cat="업무">💼 업무</button>
+      <button class="filter-btn" data-cat="습관">✅ 습관</button>
+      <button class="filter-btn" data-cat="기술">💻 기술</button>
+      <button class="filter-btn" data-cat="기타">🌱 기타</button>
+    </div>
+  </div>
+
+  <!-- ─── SORT BAR ─── -->
+  <div class="sort-bar">
+    <div class="sort-inner">
+      <span class="sort-label">정렬</span>
+      <button class="sort-btn active" data-sort="newest">최신순</button>
+      <button class="sort-btn" data-sort="popular">인기순</button>
+      <button class="sort-btn" data-sort="days">연속일수</button>
+    </div>
+    <div class="search-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="검색어를 입력하세요..." />
+    </div>
+  </div>
+
+  <!-- ─── 마이페이지 ─── -->
+  <div class="mypage-section hidden" id="mypageSection">
+    <div class="mypage-inner">
+      <div class="mypage-profile">
+        <img id="mypageAvatar" src="" alt="프로필" class="mypage-avatar" />
+        <div class="mypage-info">
+          <div class="mypage-name" id="mypageName"></div>
+          <div class="mypage-email" id="mypageEmail"></div>
+        </div>
+      </div>
+      <div class="mypage-stats">
+        <div class="my-stat"><span class="my-stat-num" id="myTotalPosts">0</span><span class="my-stat-label">총 기록</span></div>
+        <div class="my-stat"><span class="my-stat-num" id="myStreak">0</span><span class="my-stat-label">현재 연속</span></div>
+        <div class="my-stat"><span class="my-stat-num" id="myMaxStreak">0</span><span class="my-stat-label">최장 연속</span></div>
+        <div class="my-stat"><span class="my-stat-num" id="myTotalLikes">0</span><span class="my-stat-label">받은 응원</span></div>
+      </div>
+      <!-- 잔디 캘린더 -->
+      <div class="streak-section">
+        <div class="streak-title">📅 나의 성장 기록 달력</div>
+        <div class="streak-calendar" id="streakCalendar"></div>
+        <div class="streak-legend">
+          <span class="legend-box legend-0"></span> 없음
+          <span class="legend-box legend-1"></span> 1개
+          <span class="legend-box legend-2"></span> 2개
+          <span class="legend-box legend-3"></span> 3개+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── FEED GRID ─── -->
+  <main class="feed-section">
+    <div class="feed-grid" id="feedGrid"></div>
+    <div class="empty-state hidden" id="emptyState">
+      <i class="fa-regular fa-face-smile-wink"></i>
+      <p>아직 기록이 없어요.<br/>첫 번째 성장 스토리를 올려보세요!</p>
+    </div>
+    <div class="load-more-wrap">
+      <button class="btn-load-more hidden" id="loadMoreBtn">더 보기</button>
+    </div>
+  </main>
+
+  <!-- ─── WRITE MODAL ─── -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal" id="writeModal">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-seedling"></i> 오늘의 성장 기록</h2>
+        <button class="modal-close" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form class="modal-form" id="writeForm">
+        <div class="form-row two-col">
+          <div class="form-group">
+            <label>닉네임 <span class="required">*</span></label>
+            <input type="text" id="fNickname" placeholder="예: 성장러, 김철수" maxlength="20" />
+          </div>
+          <div class="form-group">
+            <label>연속 도전 일수 <span class="required">*</span></label>
+            <div class="day-input-wrap">
+              <input type="number" id="fDayCount" placeholder="0" min="1" max="9999" />
+              <span>일째</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>카테고리</label>
+          <div class="cat-selector" id="catSelector">
+            <button type="button" class="cat-opt active" data-val="습관">✅ 습관</button>
+            <button type="button" class="cat-opt" data-val="공부">📚 공부</button>
+            <button type="button" class="cat-opt" data-val="운동">🏋️ 운동</button>
+            <button type="button" class="cat-opt" data-val="독서">📖 독서</button>
+            <button type="button" class="cat-opt" data-val="업무">💼 업무</button>
+            <button type="button" class="cat-opt" data-val="기술">💻 기술</button>
+            <button type="button" class="cat-opt" data-val="기타">🌱 기타</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>오늘의 성장 내용 <span class="required">*</span></label>
+          <textarea id="fContent" placeholder="오늘 무엇을 했나요? 어떤 변화가 있었나요?" rows="5" maxlength="500"></textarea>
+          <span class="char-count"><span id="charCount">0</span>/500</span>
+        </div>
+        <div class="form-group">
+          <label>사진 첨부 <span class="optional">(선택 · 최대 5MB)</span></label>
+          <div class="upload-zone" id="uploadZone">
+            <input type="file" id="fImageFile" accept="image/*" hidden />
+            <div class="upload-placeholder" id="uploadPlaceholder">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span class="upload-main">사진을 끌어다 놓거나 클릭해서 선택</span>
+              <span class="upload-sub">JPG, PNG, GIF, WEBP · 최대 5MB</span>
+            </div>
+            <div class="upload-preview hidden" id="uploadPreview">
+              <img id="previewImg" src="" alt="미리보기" />
+              <button type="button" class="upload-remove" id="uploadRemove">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+              <span class="upload-filename" id="uploadFilename"></span>
+            </div>
+          </div>
+          <div class="upload-progress hidden" id="uploadProgress">
+            <div class="upload-progress-bar" id="uploadProgressBar"></div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" id="cancelBtn">취소</button>
+          <button type="submit" class="btn-submit">
+            <i class="fa-solid fa-paper-plane"></i> 기록 올리기
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ─── TOAST ─── -->
+  <div class="toast hidden" id="toast"></div>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <img src="nowhae_logo.png" alt="NOWHAE" class="footer-logo-img" />
+      <p class="footer-copy">© 2026 nowhae.co.kr — 매일 성장하는 사람들의 공간</p>
+      <p class="footer-tagline">"작은 기록이 큰 변화를 만든다"</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
