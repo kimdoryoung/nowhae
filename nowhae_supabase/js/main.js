@@ -246,8 +246,19 @@ function renderStreakCalendar(posts) {
     const tooltip = dayPosts.length > 0
       ? dayPosts.map(p => p.content.substring(0, 20)).join(' / ')
       : (d.toDateString() === today.toDateString() ? '오늘 아직 기록 없음' : '');
+    // 달력 셀 안에 내용 요약 표시
+    let cellContent = '';
+    if (dayPosts.length > 0) {
+      dayPosts.forEach(p => {
+        const emoji = getCatEmoji(p.category);
+        const short = p.content.substring(0, 10) + (p.content.length > 10 ? '...' : '');
+        cellContent += '<span class="cal-cell-row">' + emoji + ' ' + short.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</span>';
+      });
+    }
     html += '<div class="cal-cell-wrap">' +
-      '<div class="cal-cell level-' + level + ' ' + isToday + '" title="' + tooltip.replace(/"/g, "'") + '"></div>' +
+      '<div class="cal-cell level-' + level + ' ' + isToday + '">' +
+        (cellContent ? '<div class="cal-cell-inner">' + cellContent + '</div>' : '') +
+      '</div>' +
       '<div class="cal-date-num ' + isToday + '">' + day + '</div>' +
       '</div>';
   }
@@ -463,6 +474,12 @@ writeForm.addEventListener('submit', async (e) => {
    BIND EVENTS
    ============================================ */
 function bindEvents() {
+  // 로고 클릭 → 메인 화면으로
+  document.getElementById('logoHome')?.addEventListener('click', () => {
+    switchTab('all');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
   openModalBtn.addEventListener('click', openModal);
   closeModalBtn.addEventListener('click', closeModal);
   cancelBtn.addEventListener('click', closeModal);
